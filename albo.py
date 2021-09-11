@@ -63,3 +63,5 @@ if last_id != id:
 file = open("last_id.txt", "w+")
 file.write(id)
 file.close()
+
+driver.quit()
