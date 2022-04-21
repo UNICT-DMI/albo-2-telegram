@@ -19,9 +19,8 @@ def get_headers(table):
     headers.append(header.string)
   return headers
 
-f = open("last_id.txt", "r")
-last_id = int(f.read())
-f.close()
+with open("last_id.txt", "r") as f:
+    last_id = int(f.read())
 
 page = requests.get("http://albo.unict.it")
 
@@ -48,6 +47,5 @@ for id in range (last_id + 1, new_id + 1):
   send_telegram_message(message)
   print(message)
 
-f = open("last_id.txt", "w+")
-f.write(str(new_id))
-f.close()
+with open("last_id.txt", "w+") as f:
+    f.write(str(new_id))
