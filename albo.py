@@ -27,17 +27,19 @@ table = soup.find('div', id='boge')
 
 new_id = int (table.find('tr').find_next_sibling().td.string)
 
-#print(new_id)
-
 headers = headers = [header.string for header in table.find('tr').find_all("td")]
+
+# Special Headers in which is preferable to put a break line character to separate section of tg message
+break_line_headers = ["Oggetto", "Inizio pubblicazione"]
 
 for id in range (last_id + 1, new_id + 1):
   tr = table.find('td', text=id).parent
   row = tr.find_all('td')
   message = ""
   for i, header in enumerate(headers):
-    #print(row[i].get_text())
-    message = message + "*" + header + "*: " + row[i].span.string + "\n"
+    if header in break_line_headers:
+      message+="\n"
+    message = message + "*" + header + "*: " + row[i].span.string.replace("*", "\\*").replace("_", "\\_") + "\n"
   send_telegram_message(message)
   print(message)
 
