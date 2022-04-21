@@ -13,12 +13,6 @@ def send_telegram_message(text: str) -> None:
     URL = "https://api.telegram.org/bot" + TOKEN + "/sendMessage?&parse_mode=markdown&" + urlencode(params, quote_via=quote_plus)
     r = requests.get(url = URL)
 
-def get_headers(table):
-  headers = []
-  for header in table.find('tr').find_all("td"):
-    headers.append(header.string)
-  return headers
-
 with open("last_id.txt", "r") as f:
     last_id = int(f.read())
 
@@ -35,7 +29,7 @@ new_id = int (table.find('tr').find_next_sibling().td.string)
 
 #print(new_id)
 
-headers = get_headers(table)
+headers = headers = [header.string for header in table.find('tr').find_all("td")]
 
 for id in range (last_id + 1, new_id + 1):
   tr = table.find('td', text=id).parent
