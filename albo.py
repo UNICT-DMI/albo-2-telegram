@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlencode, quote_plus
 from typing import List
+import json
 
 TOKEN = ""
 CHATID = 123456
@@ -14,10 +15,41 @@ def escape_char (text: str, char_to_escape: List[str] = ['_', '*', '[', '`']) ->
 def send_telegram_message(text: str) -> None:
     params = {
         'chat_id': CHATID,
-        'text': text
+        'text': text,
+        'parse_mode': 'markdown'
     }
-    URL = "https://api.telegram.org/bot" + TOKEN + "/sendMessage?&parse_mode=markdown&" + urlencode(params, quote_via=quote_plus)
+    URL = "https://api.telegram.org/bot" + TOKEN + "/sendMessage?&" + urlencode(params, quote_via=quote_plus)
     r = requests.get(url = URL)
+
+def send_single_telegram_attachment(pdf_link: str) -> None:
+    params = {
+        'chat_id': CHATID,
+        'document': pdf_link,
+        'disable_notification': True
+    }
+    URL = "https://api.telegram.org/bot" + TOKEN + "/sendDocument?&" + urlencode(params, quote_via=quote_plus)
+    r = requests.get(url = URL)
+
+def send_multiple_telegram_attachments(pdf_links: List[str]) -> None:
+    params = {
+        'chat_id': CHATID,
+        'disable_notification': True,
+        'media': json.dumps([
+          { 
+            "type": "document",
+            "media": pdf_link
+          }
+        for pdf_link in pdf_links]),
+
+    }
+    URL = "https://api.telegram.org/bot" + TOKEN + "/sendMediaGroup?&" + urlencode(params, quote_via=quote_plus)
+    r = requests.get(url = URL)
+
+def send_telegram_attachments(pdf_links: List[str]) -> None:
+  if len(pdf_links) == 1:
+    send_single_telegram_attachment(pdf_links[0])
+  else:
+    send_multiple_telegram_attachments(pdf_links)
 
 with open("last_id.txt", "r") as f:
     last_id = int(f.read())
@@ -47,6 +79,8 @@ for id in range (last_id + 1, new_id + 1):
       message += "\n"
     message += "*" + header + "*: " + escape_char(row[i].span.string) + "\n"
   send_telegram_message(message)
+  attachments = ["http://albo.unict.it/" + list_item['href'] for list_item in tr.find_all('a')]
+  send_telegram_attachments(attachments)
   print(message)
 
 with open("last_id.txt", "w+") as f:
