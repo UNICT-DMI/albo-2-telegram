@@ -1,20 +1,9 @@
-from selenium import webdriver
 import requests
+from bs4 import BeautifulSoup
 from urllib.parse import urlencode, quote_plus
 
 TOKEN = ""
 CHATID = 123456
-
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument('--no-sandbox')
-chrome_options.add_argument('--headless')
-chrome_options.add_argument('--disable-gpu')
-chrome_options.add_argument('--disable-dev-shm-usage')
-chrome_options.add_argument("--window-size=1920,1080")
-chrome_options.add_argument("--disable-extensions")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument('disable-blink-features=AutomationControlled')
-chrome_options.add_argument('user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36')
 
 def send_telegram_message(text):
     params = {
@@ -24,44 +13,41 @@ def send_telegram_message(text):
     URL = "https://api.telegram.org/bot" + TOKEN + "/sendMessage?&parse_mode=markdown&" + urlencode(params, quote_via=quote_plus)
     r = requests.get(url = URL)
 
+def get_headers(table):
+  headers = []
+  for header in table.find('tr').find_all("td"):
+    headers.append(header.string)
+  return headers
 
-headers = [
-  "Numero",
-  "Data registrazione",
-  "Richiedente",
-  "Oggetto",
-  "Inizio pubblicazione",
-  "Fine pubblicazione",
-]
+f = open("last_id.txt", "r")
+last_id = int(f.read())
+f.close()
 
-driver = webdriver.Chrome(options=chrome_options)
+page = requests.get("http://albo.unict.it")
 
-driver.get('https://ws1.unict.it/albo/')
+if page.status_code != 200:
+  print("Impossibile accedere al sito, riprovare più tardi")
 
-file = open('last_id.txt', 'r')
-last_id = int(file.read())
-file.close()
+soup = BeautifulSoup(page.content, 'html.parser')
 
-id = driver.execute_script("return document.querySelectorAll('.records tr')[1].querySelectorAll('td')[0].innerText")
+table = soup.find('div', id='boge')
 
-if last_id != id:
-  diff = int(id) - last_id
+new_id = int (table.find('tr').find_next_sibling().td.string)
 
-  for x in range(diff):
-    data = driver.execute_script("return [...document.querySelectorAll('.records tr')[" + str(x+1) +"].querySelectorAll('td')].map(x => x.querySelector('span').innerText)")
+#print(new_id)
 
-    content = ""
+headers = get_headers(table)
 
-    for idx in range(len(headers)):
-      print(headers[idx] + ": " + data[idx])
-      content += "*" + headers[idx] + "*: " + data[idx] + "\n"
+for id in range (last_id + 1, new_id + 1):
+  tr = table.find('td', text=id).parent
+  row = tr.find_all('td')
+  message = ""
+  for i, header in enumerate(headers):
+    #print(row[i].get_text())
+    message = message + "*" + header + "*: " + row[i].span.string + "\n"
+  send_telegram_message(message)
+  print(message)
 
-    print("\n")
-    send_telegram_message(content)
-
-# update id
-file = open("last_id.txt", "w+")
-file.write(id)
-file.close()
-
-driver.quit()
+f = open("last_id.txt", "w+")
+f.write(str(new_id))
+f.close()
