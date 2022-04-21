@@ -19,7 +19,7 @@ def send_telegram_message(text: str) -> None:
         'parse_mode': 'markdown'
     }
     URL = "https://api.telegram.org/bot" + TOKEN + "/sendMessage?&" + urlencode(params, quote_via=quote_plus)
-    r = requests.get(url = URL)
+    requests.get(url = URL)
 
 def send_single_telegram_attachment(pdf_link: str) -> None:
     params = {
@@ -28,22 +28,17 @@ def send_single_telegram_attachment(pdf_link: str) -> None:
         'disable_notification': True
     }
     URL = "https://api.telegram.org/bot" + TOKEN + "/sendDocument?&" + urlencode(params, quote_via=quote_plus)
-    r = requests.get(url = URL)
+    requests.get(url = URL)
 
 def send_multiple_telegram_attachments(pdf_links: List[str]) -> None:
+    input_media_documents = [ {   "type": "document",  "media": pdf_link   }  for pdf_link in pdf_links]
     params = {
         'chat_id': CHATID,
         'disable_notification': True,
-        'media': json.dumps([
-          { 
-            "type": "document",
-            "media": pdf_link
-          }
-        for pdf_link in pdf_links]),
-
+        'media': json.dumps(input_media_documents),
     }
     URL = "https://api.telegram.org/bot" + TOKEN + "/sendMediaGroup?&" + urlencode(params, quote_via=quote_plus)
-    r = requests.get(url = URL)
+    requests.get(url = URL)
 
 def send_telegram_attachments(pdf_links: List[str]) -> None:
   if len(pdf_links) == 1:
@@ -81,7 +76,7 @@ for id in range (last_id + 1, new_id + 1):
   send_telegram_message(message)
   attachments = ["http://albo.unict.it/" + list_item['href'] for list_item in tr.find_all('a')]
   send_telegram_attachments(attachments)
-  print(message)
+  #print(message)
 
 with open("last_id.txt", "w+") as f:
     f.write(str(new_id))
