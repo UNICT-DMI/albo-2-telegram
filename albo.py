@@ -41,10 +41,7 @@ def send_multiple_telegram_attachments(pdf_links: List[str]) -> None:
     requests.get(url = URL)
 
 def send_telegram_attachments(pdf_links: List[str]) -> None:
-  if len(pdf_links) == 1:
-    send_single_telegram_attachment(pdf_links[0])
-  else:
-    send_multiple_telegram_attachments(pdf_links)
+  send_single_telegram_attachment(pdf_links[0]) if len(pdf_links) == 1 else send_multiple_telegram_attachments(pdf_links)
 
 with open("last_id.txt", "r") as f:
     last_id = int(f.read())
