@@ -5,7 +5,7 @@ from urllib.parse import urlencode, quote_plus
 TOKEN = ""
 CHATID = 123456
 
-def send_telegram_message(text):
+def send_telegram_message(text: str) -> None:
     params = {
         'chat_id': CHATID,
         'text': text
