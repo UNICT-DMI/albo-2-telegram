@@ -17,3 +17,4 @@ Run `python3 albo.py` every X minutes to check
 ### credits
 
 - Stefano Borzì (Helias)
+- Luca Greco
