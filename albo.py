@@ -12,23 +12,30 @@ def escape_char (text: str, char_to_escape: List[str] = ['_', '*', '[', '`']) ->
     text = text.replace(char, "\\" + char)
   return text
 
+def send_https_request (URL: str) -> None:
+  r = requests.get(url = URL)
+  responseJSON = r.json()
+  if responseJSON["ok"] == False:
+    raise ValueError (json.dumps(responseJSON, indent=2), URL.split("&")[-1])
+
+
 def send_telegram_message(text: str) -> None:
     params = {
         'chat_id': CHATID,
-        'text': text,
-        'parse_mode': 'markdown'
+        'parse_mode': 'markdown',
+        'text': text
     }
     URL = "https://api.telegram.org/bot" + TOKEN + "/sendMessage?&" + urlencode(params, quote_via=quote_plus)
-    requests.get(url = URL)
+    send_https_request (URL)
 
 def send_single_telegram_attachment(pdf_link: str) -> None:
     params = {
         'chat_id': CHATID,
-        'document': pdf_link,
-        'disable_notification': True
+        'disable_notification': True,
+        'document': pdf_link
     }
     URL = "https://api.telegram.org/bot" + TOKEN + "/sendDocument?&" + urlencode(params, quote_via=quote_plus)
-    requests.get(url = URL)
+    send_https_request (URL)
 
 def send_multiple_telegram_attachments(pdf_links: List[str]) -> None:
     input_media_documents = [ {   "type": "document",  "media": pdf_link   }  for pdf_link in pdf_links]
@@ -38,7 +45,7 @@ def send_multiple_telegram_attachments(pdf_links: List[str]) -> None:
         'media': json.dumps(input_media_documents),
     }
     URL = "https://api.telegram.org/bot" + TOKEN + "/sendMediaGroup?&" + urlencode(params, quote_via=quote_plus)
-    requests.get(url = URL)
+    send_https_request (URL)
 
 def send_telegram_attachments(pdf_links: List[str]) -> None:
     if len(pdf_links) == 1:
@@ -73,9 +80,13 @@ for id in range (last_id + 1, new_id + 1):
     if header in break_line_headers:
       message += "\n"
     message += "*" + header + "*: " + escape_char(row[i].span.string) + "\n"
-  send_telegram_message(message)
-  attachments = ["http://albo.unict.it/" + list_item['href'] for list_item in tr.find_all('a')]
-  send_telegram_attachments(attachments)
+  try:
+    send_telegram_message(message)
+    attachments = ["http://albo.unict.it/" + list_item['href'] for list_item in tr.find_all('a')]
+    send_telegram_attachments(attachments)
+  except ValueError as err:
+    error_string = "response sent: " + err.args[0] + "\n" + "last parameter: "+ err.args[1]
+    print (error_string) #Insert here bot sending error message in group
   #print(message)
 
 with open("last_id.txt", "w+") as f:
