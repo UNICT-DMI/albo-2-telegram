@@ -21,7 +21,7 @@ def send_https_request (URL: str) -> None:
 
 def send_telegram_message(text: str, chat_id = CHATID) -> None:
     params = {
-        'chat_id': CHATID,
+        'chat_id': chat_id,
         'parse_mode': 'markdown',
         'text': text
     }
