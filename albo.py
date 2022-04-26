@@ -19,7 +19,7 @@ def send_https_request (URL: str) -> None:
     raise ValueError (json.dumps(responseJSON, indent=2), URL.split("&")[-1])
 
 
-def send_telegram_message(text: str) -> None:
+def send_telegram_message(text: str, chat_id = CHATID) -> None:
     params = {
         'chat_id': CHATID,
         'parse_mode': 'markdown',
