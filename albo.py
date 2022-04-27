@@ -7,7 +7,7 @@ import re
 
 TOKEN = ""
 CHATID = 123456
-CHAT_ID_DEV = 123456
+CHAT_ID_DEV_LIST = [123456]
 
 def escape_char (text: str, char_to_escape: List[str] = ['_', '*', '[', '`']) -> str:
   for char in char_to_escape:
@@ -87,9 +87,12 @@ for id in range (last_id + 1, new_id + 1):
     attachments = ["http://albo.unict.it/" + list_item['href'] for list_item in tr.find_all('a')]
     send_telegram_attachments(attachments)
   except ValueError as err:
-    error_string = "response sent: " + err.args[0] + "\n" + "related documents:\n" + '\n'.join(re.findall(r"https?:.+?(?=\\)", json.dumps(unquote(err.args[1])), re.MULTILINE))
-    #print (error_string) #Insert here bot sending error message in group
-    send_telegram_message(escape_char(error_string), CHAT_ID_DEV)
+    decoded_url = json.dumps(unquote(err.args[1]))
+    document_list = re.findall(r"https?:.+?(?=\\|\")", decoded_url)
+    error_string = "```response sent: " + err.args[0] + "\n```" + "related documents:\n" + escape_char('\n'.join(document_list))
+    print (json.dumps(unquote(err.args[1]))) #Insert here bot sending error message in group
+    for dev in CHAT_ID_DEV_LIST:
+      send_telegram_message(error_string, dev)
   #print(message)
 
 with open("last_id.txt", "w+") as f:
