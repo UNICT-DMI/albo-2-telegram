@@ -2,7 +2,7 @@
 
 [Live Demo](https://t.me/albo_unict)
 
-### installation
+### Installation
 
 Clone this repo with:
 
@@ -13,10 +13,10 @@ $ git clone https://github.com/UNICT-DMI/albo-2-telegram.git
 Install project dependecies with:
 
 ```
-$ pip3 install -r requirements.txt`
+$ pip3 install -r requirements.txt
 ```
 
-### usage
+### Usage
 
 Create a duplicate file of `settings.yaml.dist` named `settings.yaml`:
 
@@ -39,7 +39,7 @@ Set in `last_id.txt` the current last ID in [albo](https://ws1.unict.it/albo/).
 
 Run `python3 albo.py` every X minutes to check
 
-### credits
+### Credits
 
 - Stefano Borzì (Helias)
 - Luca Greco
