@@ -12,7 +12,9 @@ $ git clone https://github.com/UNICT-DMI/albo-2-telegram.git
 
 Install project dependecies with:
 
+```
 settings.yaml$ pip3 install -r requirements.txt`
+```
 
 ### usage
 
