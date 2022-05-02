@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import unquote, urlencode, quote_plus
 import yaml
 from yaml.loader import SafeLoader
-from typing import List
+from typing import List, Union
 import json
 import re
 
@@ -23,7 +23,7 @@ def send_https_request (URL: str) -> None:
     raise ValueError (json.dumps(responseJSON, indent=2), URL.split("&")[-1])
 
 
-def send_telegram_message(text: str, chat_id: int = CHATID) -> None:
+def send_telegram_message(text: str, chat_id: Union[int, str] = CHATID) -> None:
     params = {
         'chat_id': chat_id,
         'parse_mode': 'markdown',
@@ -32,7 +32,7 @@ def send_telegram_message(text: str, chat_id: int = CHATID) -> None:
     URL = "https://api.telegram.org/bot" + TOKEN + "/sendMessage?&" + urlencode(params, quote_via=quote_plus)
     send_https_request (URL)
 
-def send_single_telegram_attachment(pdf_link: str, chat_id: int = CHATID) -> None:
+def send_single_telegram_attachment(pdf_link: str, chat_id: Union[int, str] = CHATID) -> None:
     params = {
         'chat_id': chat_id,
         'disable_notification': True,
@@ -41,7 +41,7 @@ def send_single_telegram_attachment(pdf_link: str, chat_id: int = CHATID) -> Non
     URL = "https://api.telegram.org/bot" + TOKEN + "/sendDocument?&" + urlencode(params, quote_via=quote_plus)
     send_https_request (URL)
 
-def send_multiple_telegram_attachments(pdf_links: List[str], chat_id: int = CHATID) -> None:
+def send_multiple_telegram_attachments(pdf_links: List[str], chat_id: Union[int, str] = CHATID) -> None:
     input_media_documents = [ {   "type": "document",  "media": pdf_link   }  for pdf_link in pdf_links]
     params = {
         'chat_id': chat_id,
