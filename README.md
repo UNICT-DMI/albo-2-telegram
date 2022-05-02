@@ -4,11 +4,34 @@
 
 ### installation
 
-pip3 install -r requirements.txt
+Clone this repo with:
+
+```
+$ git clone https://github.com/UNICT-DMI/albo-2-telegram.git
+```
+
+Install project dependecies with:
+
+settings.yaml$ pip3 install -r requirements.txt`
 
 ### usage
 
-Open albo.py and put **TOKEN** and **CHATID**.
+Create a duplicate file of `settings.yaml.dist` named `settings.yaml`:
+
+```
+$ cp settings.yaml.dist settings.yaml
+```
+
+Edit the values inside the configuration file as you see fit, specifically:
+
+```
+token: "" <string containing the bot's unique identifier>
+chat_id: 123456 <chat_id of the channel in which the bot will post its messagges>
+chat_id_dev: <list of chat_ids with devs to receive technical exception regarding the bot>
+  - 123456
+  - 123456
+  - ... 
+```
 
 Set in `last_id.txt` the current last ID in [albo](https://ws1.unict.it/albo/).
 
