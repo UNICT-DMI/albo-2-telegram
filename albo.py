@@ -1,13 +1,15 @@
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import unquote, urlencode, quote_plus
+import yaml
+from yaml.loader import SafeLoader
 from typing import List
 import json
 import re
 
-TOKEN = ""
-CHATID = 123456
-CHAT_ID_DEV_LIST = [123456]
+with open('settings.yaml') as f:
+  data = yaml.load(f, Loader=SafeLoader)
+  TOKEN, CHATID, CHAT_ID_DEV_LIST = data.values()
 
 def escape_char (text: str, char_to_escape: List[str] = ['_', '*', '[', '`']) -> str:
   for char in char_to_escape:
