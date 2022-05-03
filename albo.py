@@ -57,8 +57,10 @@ def send_telegram_attachments(pdf_links: List[str]) -> None:
     else:
       send_multiple_telegram_attachments(pdf_links)
 
-with open("last_id.txt", "r") as f_id, open("cached_announcements.txt", "r") as f_cached:
+with open("last_id.txt", "r") as f_id:
     last_id = int(f_id.read())
+
+with open("cached_announcements.txt", "r") as f_cached:
     cached_announcements = [int(cached_id) for cached_id in f_cached.read().splitlines()]
 
 page = requests.get("http://albo.unict.it")
@@ -106,7 +108,9 @@ for id in ids_to_parse:
       send_telegram_message(error_string, dev)
   #print(message)
 
-with open("last_id.txt", "w+") as f_id, open("cached_announcements.txt", "w+") as f_cached:
+with open("last_id.txt", "w+") as f_id:
     f_id.write(str(new_id))
-    for cached_id in cached_announcements:
+
+with open("cached_announcements.txt", "w+") as f_cached:    
+  for cached_id in cached_announcements:
       f_cached.write(str(cached_id) +  "\n")
