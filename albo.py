@@ -77,7 +77,9 @@ headers = [header.string for header in table.find('tr').find_all("td")]
 # Special Headers in which is preferable to put a break line character to separate section of tg message
 break_line_headers = ["Oggetto", "Inizio pubblicazione"]
 
-for id in cached_announcements + list(range(last_id + 1, new_id + 1)):
+ids_to_parse = cached_announcements + list(range(last_id + 1, new_id + 1))
+
+for id in ids_to_parse:
   tr = table.find('td', text=id).parent
   row = tr.find_all('td')
   message = ""
