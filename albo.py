@@ -3,9 +3,10 @@ from bs4 import BeautifulSoup
 from urllib.parse import unquote, urlencode, quote_plus
 import yaml
 from yaml.loader import SafeLoader
-from typing import List
+from typing import List, Union
 import json
 import re
+import os.path
 
 with open('settings.yaml') as f:
   data = yaml.load(f, Loader=SafeLoader)
@@ -23,7 +24,7 @@ def send_https_request (URL: str) -> None:
     raise ValueError (json.dumps(responseJSON, indent=2), URL.split("&")[-1])
 
 
-def send_telegram_message(text: str, chat_id: int = CHATID) -> None:
+def send_telegram_message(text: str, chat_id: Union[int, str] = CHATID) -> None:
     params = {
         'chat_id': chat_id,
         'parse_mode': 'markdown',
@@ -32,7 +33,7 @@ def send_telegram_message(text: str, chat_id: int = CHATID) -> None:
     URL = "https://api.telegram.org/bot" + TOKEN + "/sendMessage?&" + urlencode(params, quote_via=quote_plus)
     send_https_request (URL)
 
-def send_single_telegram_attachment(pdf_link: str, chat_id: int = CHATID) -> None:
+def send_single_telegram_attachment(pdf_link: str, chat_id: Union[int, str] = CHATID) -> None:
     params = {
         'chat_id': chat_id,
         'disable_notification': True,
@@ -41,7 +42,7 @@ def send_single_telegram_attachment(pdf_link: str, chat_id: int = CHATID) -> Non
     URL = "https://api.telegram.org/bot" + TOKEN + "/sendDocument?&" + urlencode(params, quote_via=quote_plus)
     send_https_request (URL)
 
-def send_multiple_telegram_attachments(pdf_links: List[str], chat_id: int = CHATID) -> None:
+def send_multiple_telegram_attachments(pdf_links: List[str], chat_id: Union[int, str] = CHATID) -> None:
     input_media_documents = [ {   "type": "document",  "media": pdf_link   }  for pdf_link in pdf_links]
     params = {
         'chat_id': chat_id,
@@ -57,8 +58,14 @@ def send_telegram_attachments(pdf_links: List[str]) -> None:
     else:
       send_multiple_telegram_attachments(pdf_links)
 
-with open("last_id.txt", "r") as f:
-    last_id = int(f.read())
+with open("last_id.txt", "r") as f_id:
+    last_id = int(f_id.read())
+
+if not os.path.exists("cached_announcements"):
+    open("cached_announcements.txt", "w").close()
+
+with open("cached_announcements.txt", "r") as f_cached:
+    cached_announcements = [int(cached_id) for cached_id in f_cached.read().splitlines()]
 
 page = requests.get("http://albo.unict.it")
 
@@ -76,7 +83,9 @@ headers = [header.string for header in table.find('tr').find_all("td")]
 # Special Headers in which is preferable to put a break line character to separate section of tg message
 break_line_headers = ["Oggetto", "Inizio pubblicazione"]
 
-for id in range (last_id + 1, new_id + 1):
+ids_to_parse = cached_announcements + list(range(last_id + 1, new_id + 1))
+
+for id in ids_to_parse:
   tr = table.find('td', text=id).parent
   row = tr.find_all('td')
   message = ""
@@ -85,9 +94,15 @@ for id in range (last_id + 1, new_id + 1):
       message += "\n"
     message += "*" + header + "*: " + escape_char(row[i].span.string) + "\n"
   try:
-    send_telegram_message(message)
     attachments = ["http://albo.unict.it/" + list_item['href'] for list_item in tr.find_all('a')]
-    send_telegram_attachments(attachments)
+    if len(attachments) == 0:
+      if id not in cached_announcements:
+        cached_announcements.append(id)
+    else:
+      if id in cached_announcements:
+        cached_announcements.remove(id)
+      send_telegram_message(message)
+      send_telegram_attachments(attachments)
   except ValueError as err:
     decoded_url = json.dumps(unquote(err.args[1]))
     document_list = re.findall(r"https?:.+?(?=\\|\")", decoded_url)
@@ -97,5 +112,9 @@ for id in range (last_id + 1, new_id + 1):
       send_telegram_message(error_string, dev)
   #print(message)
 
-with open("last_id.txt", "w+") as f:
-    f.write(str(new_id))
+with open("last_id.txt", "w+") as f_id:
+    f_id.write(str(new_id))
+
+with open("cached_announcements.txt", "w+") as f_cached:    
+  for cached_id in cached_announcements:
+      f_cached.write(str(cached_id) +  "\n")
