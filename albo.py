@@ -6,6 +6,7 @@ from yaml.loader import SafeLoader
 from typing import List, Union
 import json
 import re
+import os.path
 
 with open('settings.yaml') as f:
   data = yaml.load(f, Loader=SafeLoader)
@@ -59,6 +60,9 @@ def send_telegram_attachments(pdf_links: List[str]) -> None:
 
 with open("last_id.txt", "r") as f_id:
     last_id = int(f_id.read())
+
+if not os.path.exists("cached_announcements"):
+    open("cached_announcements.txt", "w").close()
 
 with open("cached_announcements.txt", "r") as f_cached:
     cached_announcements = [int(cached_id) for cached_id in f_cached.read().splitlines()]
