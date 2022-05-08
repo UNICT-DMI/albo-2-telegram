@@ -60,8 +60,8 @@ def main ():
       tg_bot.send_documents_error_message(err)
     #print(message)
 
-#   with open("data/last_id.txt", "w+") as f_id:
-#       f_id.write(str(new_id))
+  with open("data/last_id.txt", "w+") as f_id:
+      f_id.write(str(new_id))
 
   with open("data/cached_announcements.txt", "w+") as f_cached:    
     for cached_id in cached_announcements:
