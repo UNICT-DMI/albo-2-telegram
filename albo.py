@@ -1,14 +1,13 @@
-from datetime import date, datetime
 import traceback
 import requests
 from bs4 import BeautifulSoup
 import os.path
+
+from utils.departments import find_all_departments
 from utils.formatting import escape_char
-from datetime import datetime
+from utils.tg import TelegramBot
 
-from utils.tg import Telegram_Bot
-
-tg_bot = Telegram_Bot.from_settings_file("settings.yaml")
+tg_bot = TelegramBot.from_settings_file("settings.yaml")
 
 def main ():
   with open("data/last_id.txt", "r") as f_id:
@@ -44,8 +43,10 @@ def main ():
     message = ""
     for i, header in enumerate(headers):
       if header in break_line_headers:
-        message += "\n"
+        message += "\n"          
       message += "*" + header + "*: " + escape_char(row[i].span.string) + "\n"
+    tags = ' '.join(["*[" + department + "]*" for department in find_all_departments(message)])
+    message = tags + "\n\n" + message
     try:
       attachments = ["http://albo.unict.it/" + list_item['href'] for list_item in tr.find_all('a')]
       if len(attachments) == 0:
@@ -59,8 +60,8 @@ def main ():
       tg_bot.send_documents_error_message(err)
     #print(message)
 
-  with open("data/last_id.txt", "w+") as f_id:
-      f_id.write(str(new_id))
+#   with open("data/last_id.txt", "w+") as f_id:
+#       f_id.write(str(new_id))
 
   with open("data/cached_announcements.txt", "w+") as f_cached:    
     for cached_id in cached_announcements:

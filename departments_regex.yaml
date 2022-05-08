@@ -1,0 +1,92 @@
+- 
+    patterns:
+        - GIUR
+        - LEX
+        - Giurisprudenza
+    name: GIUR
+- 
+    patterns:
+        - DEI
+        - Impersa
+        - Economia
+    name: DEI
+- 
+    patterns:
+        - DSPS
+        - Scienze.+((Politiche)|(Sociali))
+    name: DSPS
+- 
+    patterns:
+        - DISUM
+        - Scienze Umanistiche
+    name: DISUM
+- 
+    patterns:
+        - DISFOR
+        - Scienze della Formazione
+    name: DISFOR
+- 
+    patterns:
+        - CHIRMED
+        - Chirurgia Generale
+        - Specialità Medico.Chirurgiche
+    name: CHIRMED
+- 
+    patterns:
+        - MEDCLIN
+        - Medicina.+((Clinica)|(Sperimentale))
+    name: MEDCLIN
+- 
+    patterns:
+        - BIOMETEC
+        - Scienze.+((Biomediche)|(Biotecnologiche))
+    name: BIOMETEC
+- 
+    patterns:
+        - DGFI
+        - Scienze.+((Mediche)|(Chirurgiche)|(Tecnologie Avanzate))
+    name: DGFI
+- 
+    patterns:
+        - DSFS
+        - Scienze.+((Farmaco)|(Salute))
+    name: DSFS
+- 
+    patterns:
+        - Di3A
+        - Agricoltura
+        - Alimentazione
+        - Ambiente
+    name: Di3A
+- 
+    patterns:
+        - DICAR
+        - Ingegneria.+((Civile)|(Architettura))
+    name: DICAR
+-  
+    patterns:
+        - DIEEI
+        - Ingegneria.+((Elettrica)|(Elettronica)|(Informatica))
+    name: DIEEI
+- 
+    patterns:
+        - DFA
+        - Fisica
+        - Astronomia
+    name: DFA
+- 
+    patterns:
+        - DMI
+        - Informatica
+        - Matematica
+    name: DMI
+- 
+    patterns:
+        - DIPBIOGEO
+        - Scienze.+((Biologiche)|(Geologiche)|(Ambientali))
+    name: DIPBIOGEO
+- 
+    patterns:
+        - DSC
+        - Scienze Chimiche
+    name: DSC

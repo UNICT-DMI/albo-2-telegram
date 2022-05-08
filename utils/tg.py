@@ -6,7 +6,7 @@ import requests
 import yaml
 from utils.formatting import escape_char
 
-class Telegram_Bot:
+class TelegramBot:
     def __init__(self, token: str, chat_id: Union[int, str], dev_chat_ids: List[str]) -> None:
         self.token = token
         self.chat_id = chat_id
@@ -14,7 +14,7 @@ class Telegram_Bot:
         pass
 
     @classmethod
-    def from_settings_file (cls, filename: str) -> 'Telegram_Bot':
+    def from_settings_file (cls, filename: str) -> 'TelegramBot':
         with open(filename) as f:
             data = yaml.load(f, Loader=yaml.SafeLoader)
             token, chat_id, dev_chat_ids = data.values()
