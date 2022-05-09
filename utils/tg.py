@@ -63,10 +63,11 @@ class TelegramBot:
             if len(message) < 1024: 
                 self.send_single_telegram_attachment(pdf_links[0], message)
             else:
-                self.send_telegram_message(message)
                 self.send_single_telegram_attachment(pdf_links[0])
+                self.send_telegram_message(message)
         else:
             self.send_multiple_telegram_attachments(pdf_links)
+            self.send_telegram_message(message)
     
     def send_documents_error_message(self, err: ValueError) -> None:
         decoded_url = json.dumps(unquote(err.args[1]))
