@@ -20,4 +20,4 @@ def find_all_departments(text: str, departments: List[Department] = deps) -> Lis
     # Avoid double match for Ingegneria Informatica
     if 'DIEEI' in department_tags and 'DMI' in department_tags:
         department_tags.remove('DMI')
-    return department_tags if department_tags != [] else ['Other']
+    return department_tags if department_tags != [] else ['UNICT']
