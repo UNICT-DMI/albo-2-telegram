@@ -75,6 +75,6 @@ class TelegramBot:
         print (json.dumps(unquote(err.args[1])))
         self.send_debug_messages(error_string)
 
-    def send_debug_messages(self, message: str):
+    def send_debug_messages(self, message: str) -> None:
         for dev in self.dev_ids:
             self.send_telegram_message(message, dev)

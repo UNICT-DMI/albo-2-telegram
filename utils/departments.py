@@ -4,13 +4,16 @@ from typing import List, TypedDict
 
 class Department(TypedDict):
     patterns: List[str]
+    acronym: str
     name: str
 
 with open("departments_regex.yaml") as f:
     deps = yaml.load(f, Loader=yaml.SafeLoader)
 
 def search_department (department: Department, text:str) -> bool: 
-    return any([re.search(pattern, text, re.IGNORECASE if i != 0 else 0) for i, pattern in enumerate(department['patterns'])])
+    matches = [re.search(pattern, text, re.IGNORECASE) for pattern in department['patterns']]
+    acronym_found = re.search(department['acronym'], text)
+    return any(matches) or acronym_found
 
 def find_all_departments(text: str, departments: List[Department] = deps) -> List[str]:
     department_tags = [department['name'] for department in departments if search_department(department, text)]
