@@ -24,7 +24,7 @@ def main ():
 
     table = soup.find('div', id='boge')
 
-    new_id = int (table.find('tr').find_next_sibling().td.string)
+    new_id = int(table.find('tr').find_next_sibling().td.string)
 
     headers = [header.string for header in table.find('tr').find_all("td")]
 

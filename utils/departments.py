@@ -10,7 +10,7 @@ class Department(TypedDict):
 with open("departments_regex.yaml") as f:
     deps = yaml.load(f, Loader=yaml.SafeLoader)
 
-def search_department (department: Department, text:str) -> bool: 
+def search_department(department: Department, text:str) -> bool: 
     matches = [re.search(pattern, text, re.IGNORECASE) for pattern in department['patterns']]
     acronym_found = re.search(department['acronym'], text)
     return any(matches) or acronym_found
