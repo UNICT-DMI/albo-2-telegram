@@ -35,11 +35,6 @@ chat_id_dev: <list of chat_ids with devs to receive technical exception regardin
   - ... 
 ```
 
-Create a new directory called `data`:
-```
-$ mkdir data
-```
-
 Create a new file named `last_id.txt` containing the current last ID in [albo](https://ws1.unict.it/albo/):
 
 ```
