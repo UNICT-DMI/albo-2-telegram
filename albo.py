@@ -40,9 +40,10 @@ def main ():
         
         try:
             attachments = ["http://albo.unict.it/" + list_item['href'] for list_item in tr.find_all('a')]
-            cached_announcements = update_cached_announcements(cached_announcements, len(attachments))
+            cached_announcements = update_cached_announcements(cached_announcements, id, len(attachments))
 
-            tg_bot.send_telegram_announcements(attachments, message)
+            if len(attachments) != 0:
+                tg_bot.send_telegram_announcements(attachments, message)
 
         except ValueError as err:
             tg_bot.send_documents_error_message(err)

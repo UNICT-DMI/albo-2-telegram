@@ -16,7 +16,7 @@ def get_cached_announcements(filename: str) -> List[int]:
 
     return cached_announcements
 
-def update_cached_announcements(cached_announcements: List[int], number_attachments: int) -> List[int]:
+def update_cached_announcements(cached_announcements: List[int], id: int, number_attachments: int) -> List[int]:
     if number_attachments == 0:
         if id not in cached_announcements:
             cached_announcements.append(id)
