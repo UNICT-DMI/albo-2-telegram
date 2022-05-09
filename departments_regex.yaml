@@ -84,8 +84,8 @@
 - 
     patterns:
         - Scienze.+((Biologiche)|(Geologiche)|(Ambientali))
-    acronym: DIPBIOGEO
-    name: DIPBIOGEO
+    acronym: BIOGEO
+    name: BIOGEO
 - 
     patterns:
         - Scienze Chimiche
