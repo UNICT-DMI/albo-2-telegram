@@ -7,7 +7,7 @@ from utils.formatting import escape_char, get_formatted_message
 from utils.resources import *
 from utils.tg import TelegramBot
 
-ALBO_UNICT_URL = "http://albo.unict.it"
+ALBO_UNICT_URL = "http://albo.unict.it/"
 
 tg_bot = TelegramBot.from_settings_file("settings.yaml")
 

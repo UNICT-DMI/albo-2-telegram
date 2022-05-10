@@ -30,9 +30,7 @@ def write_new_id(filename: str, new_id: int) -> None:
         f_id.write(str(new_id))
 
 def write_cached_announcements(filename: str, cached_announcements: List[int]) -> None:
-    text = ''
-    for cache_id in cached_announcements:
-        text += str(cache_id) + '\n'
+    text = '\n'.join(map(str, cached_announcements))
   
     with open(filename, "w+") as f_cached:    
         f_cached.write(text)
