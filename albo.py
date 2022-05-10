@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from utils.departments import find_all_departments
-from utils.formatting import escape_char, get_formatted_message
+from utils.formatting import escape_char, get_formatted_department_tags, get_formatted_message
 from utils.resources import *
 from utils.tg import TelegramBot
 
@@ -37,7 +37,7 @@ def main ():
         row = tr.find_all('td')
 
         message = get_formatted_message(row, headers)
-        tags = ' '.join(["*[" + department + "]*" for department in find_all_departments(message)])
+        tags = get_formatted_department_tags(message)
         message = tags + "\n\n" + message
         
         try:
