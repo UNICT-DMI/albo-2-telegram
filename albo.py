@@ -7,6 +7,8 @@ from utils.formatting import escape_char, get_formatted_message
 from utils.resources import *
 from utils.tg import TelegramBot
 
+ALBO_UNICT_URL = "http://albo.unict.it"
+
 tg_bot = TelegramBot.from_settings_file("settings.yaml")
 
 def main ():    
@@ -14,7 +16,7 @@ def main ():
 
     cached_announcements = get_cached_announcements("data/cached_announcements.txt")
 
-    page = requests.get("http://albo.unict.it")
+    page = requests.get(ALBO_UNICT_URL)
 
     if page.status_code != 200:
         print("Impossibile accedere al sito, riprovare più tardi")
@@ -39,7 +41,7 @@ def main ():
         message = tags + "\n\n" + message
         
         try:
-            attachments = ["http://albo.unict.it/" + list_item['href'] for list_item in tr.find_all('a')]
+            attachments = [ALBO_UNICT_URL + list_item['href'] for list_item in tr.find_all('a')]
             cached_announcements = update_cached_announcements(cached_announcements, id, len(attachments))
 
             if len(attachments) != 0:
