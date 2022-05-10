@@ -1,3 +1,4 @@
 settings.yaml
-last_id.txt
-cached_announcements.txt
+data/last_id.txt
+data/cached_announcements.txt
+utils/__pycache__

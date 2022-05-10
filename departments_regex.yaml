@@ -1,0 +1,93 @@
+- 
+    patterns:
+        - LEX
+        - Giurisprudenza
+    acronym: GIUR
+    name: GIUR
+- 
+    patterns:
+        - Impresa
+        - Economia
+    acronym: DEI
+    name: DEI
+- 
+    patterns:
+        - Scienze.+((Politiche)|(Sociali))
+    acronym: DSPS
+    name: DSPS
+- 
+    patterns:
+        - Scienze Umanistiche
+    acronym: DISUM
+    name: DISUM
+- 
+    patterns:
+        - Scienze della Formazione
+    acronym: DISFOR
+    name: DISFOR
+- 
+    patterns:
+        - Chirurgia Generale
+        - Specialità Medico.Chirurgiche
+    acronym: CHIRMED
+    name: CHIRMED
+- 
+    patterns:
+        - Medicina.+((Clinica)|(Sperimentale))
+    acronym: MEDCLIN
+    name: MEDCLIN
+- 
+    patterns:
+        - Scienze.+((Biomediche)|(Biotecnologiche))
+    acronym: BIOMETEC
+    name: BIOMETEC
+- 
+    patterns:
+        - Scienze.+((Mediche)|(Chirurgiche)|(Tecnologie Avanzate))
+    acronym: DGFI
+    name: DGFI
+- 
+    patterns:
+        - Scienze.+((Farmaco)|(Salute))
+    acronym: DSFS
+    name: DSFS
+- 
+    patterns:
+        - Di3A
+        - Agricoltura
+        - Alimentazione
+        - Ambiente
+    acronym: Di3A
+    name: Di3A
+- 
+    patterns:
+        - Ingegneria.+((Civile)|(Architettura))
+    acronym: DICAR
+    name: DICAR
+-  
+    patterns:
+        - Ingegneria.+((Elettrica)|(Elettronica)|(Informatica))
+    acronym: DIEEI
+    name: DIEEI
+- 
+    patterns:
+        - Fisica
+        - Astronomia
+    acronym: DFA
+    name: DFA
+- 
+    patterns:
+        - Informatica
+        - Matematica
+    acronym: DMI
+    name: DMI
+- 
+    patterns:
+        - Scienze.+((Biologiche)|(Geologiche)|(Ambientali))
+    acronym: BIOGEO
+    name: BIOGEO
+- 
+    patterns:
+        - Scienze Chimiche
+    acronym: DSC
+    name: DSC

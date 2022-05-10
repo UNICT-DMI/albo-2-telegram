@@ -38,7 +38,7 @@ chat_id_dev: <list of chat_ids with devs to receive technical exception regardin
 Create a new file named `last_id.txt` containing the current last ID in [albo](https://ws1.unict.it/albo/):
 
 ```
-$ echo 510 > last_id.txt
+$ echo 510 > data/last_id.txt
 ```
 
 Run `python3 albo.py` every X minutes to check
