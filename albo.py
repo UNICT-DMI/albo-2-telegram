@@ -25,7 +25,12 @@ def main ():
 
     table = soup.find('div', id='boge')
 
-    new_id = int(table.find('tr').find_next_sibling().td.string)
+    top_element = table.find('tr').find_next_sibling().td
+
+    if (top_element is None):
+        return
+
+    new_id = int(top_element.string)
 
     headers = [header.string for header in table.find('tr').find_all("td")]
 
@@ -47,7 +52,8 @@ def main ():
                 tg_bot.send_telegram_announcements(attachments, message)
 
         except ValueError as err:
-            tg_bot.send_documents_error_message(err)
+            cached_announcements = update_cached_announcements(cached_announcements, id, len(attachments))
+            tg_bot.send_documents_error_message(err, id)
 
     write_new_id("data/last_id.txt", new_id)
     write_cached_announcements("data/cached_announcements.txt", cached_announcements)
@@ -57,6 +63,6 @@ if __name__ == '__main__':
     try:
         main()
     except Exception as e:
-        error_string = "An exception was raised:\n" + "`" + escape_char(traceback.format_exc()) +  "`"
+        error_string = "An exception was raised:\n" + "`" + traceback.format_exc() +  "`"
         tg_bot.send_debug_messages(error_string)
         raise
