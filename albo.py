@@ -36,6 +36,10 @@ def main ():
 
     ids_to_parse = cached_announcements + list(range(last_id + 1, new_id + 1))
 
+    #avoid channel flooding in case of error
+    if len(ids_to_parse) > 10:
+        ids_to_parse = []
+
     for id in ids_to_parse:
         td = table.find('td', text=id)
 
