@@ -37,7 +37,13 @@ def main ():
     ids_to_parse = cached_announcements + list(range(last_id + 1, new_id + 1))
 
     for id in ids_to_parse:
-        tr = table.find('td', text=id).parent
+        td = table.find('td', text=id)
+
+        if (td is None):
+            tg_bot.send_debug_messages("ID non trovato: " + str(id) + "\n" + "Probabilmente lo hanno saltato")
+            continue
+
+        tr = td.parent
         row = tr.find_all('td')
 
         message = get_formatted_message(row, headers)
