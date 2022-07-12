@@ -1,3 +1,4 @@
+import re
 import traceback
 import requests
 from bs4 import BeautifulSoup
@@ -25,10 +26,12 @@ def main ():
 
     table = soup.find('div', id='boge')
 
-    top_element = table.find('tr').find_next_sibling().td
+    header_row = table.find('tr')
 
-    if (top_element is None):
+    if header_row is None:
         return
+
+    top_element = header_row.find_next_sibling().td
 
     new_id = int(top_element.string)
 
