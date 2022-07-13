@@ -26,14 +26,13 @@ def main ():
 
     table = soup.find('div', id='boge')
 
-    header_row = table.find('tr')
+    top_row = table.find('tr').find_next_sibling()
 
-    if header_row is None:
+    if top_row is None:
+        print("Nessun annuncio disponibile")
         return
 
-    top_element = header_row.find_next_sibling().td
-
-    new_id = int(top_element.string)
+    new_id = int(top_row.td.string)
 
     headers = [header.string for header in table.find('tr').find_all("td")]
 
