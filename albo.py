@@ -46,7 +46,7 @@ def main ():
     for id in ids_to_parse:
         td = table.find('td', text=id)
 
-        if (td is None):
+        if td is None:
             tg_bot.send_debug_messages("ID non trovato: " + str(id) + "\n" + "Probabilmente lo hanno saltato")
             if id in cached_announcements:
                 cached_announcements.remove(id)
