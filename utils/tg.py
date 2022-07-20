@@ -69,10 +69,10 @@ class TelegramBot:
             self.send_multiple_telegram_attachments(pdf_links)
             self.send_telegram_message(message)
     
-    def send_documents_error_message(self, err: ValueError) -> None:
+    def send_documents_error_message(self, err: ValueError, id: int) -> None:
         decoded_url = json.dumps(unquote(err.args[1]))
         document_list = re.findall(r"https?:.+?(?=\\|\")", decoded_url)
-        error_string = "```response sent: " + err.args[0] + "\n```" + "related documents:\n" + escape_char('\n'.join(document_list))
+        error_string = "id: " + str(id) + "\n" + "``` response sent: " + err.args[0] + "\n```" + "related documents:\n" + escape_char('\n'.join(document_list))
         print (json.dumps(unquote(err.args[1])))
         self.send_debug_messages(error_string)
 
