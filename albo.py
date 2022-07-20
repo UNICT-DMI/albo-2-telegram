@@ -50,7 +50,8 @@ def main ():
 
         if (td is None):
             tg_bot.send_debug_messages("ID non trovato: " + str(id) + "\n" + "Probabilmente lo hanno saltato")
-            cached_announcements.remove(id)
+            if id in cached_announcements:
+                cached_announcements.remove(id)
             continue
 
         tr = td.parent
