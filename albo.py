@@ -1,4 +1,6 @@
+from linecache import cache
 import re
+import sys
 import traceback
 import requests
 from bs4 import BeautifulSoup
@@ -39,14 +41,16 @@ def main ():
     ids_to_parse = cached_announcements + list(range(last_id + 1, new_id + 1))
 
     #avoid channel flooding in case of error
-    if len(ids_to_parse) > 10:
+    if len(ids_to_parse) > 10 and '--force-unsafe' not in sys.argv:
         ids_to_parse = []
+        print("Troppi annunci da parsare, usare --force-unsafe per forzare l'invio")
 
     for id in ids_to_parse:
         td = table.find('td', text=id)
 
         if (td is None):
             tg_bot.send_debug_messages("ID non trovato: " + str(id) + "\n" + "Probabilmente lo hanno saltato")
+            cached_announcements.remove(id)
             continue
 
         tr = td.parent
