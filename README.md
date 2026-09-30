@@ -12,11 +12,13 @@ $ git clone https://github.com/UNICT-DMI/albo-2-telegram.git
 
 Requires Python 3.15 or newer.
 
-Install project dependecies with:
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then install project dependencies with:
 
 ```
-$ python3.15 -m pip install -r requirements.txt
+$ uv sync
 ```
+
+uv downloads Python 3.15 itself if it's missing.
 
 ### Usage
 
@@ -43,7 +45,13 @@ Create a new file named `last_id.txt` containing the current last ID in [albo](h
 $ echo 510 > data/last_id.txt
 ```
 
-Run `python3.15 albo.py` every X minutes to check
+Run `uv run albo.py` from the project directory every X minutes to check (the script reads `settings.yaml`, `data/` and `departments_regex.yaml` via relative paths). `uv run` syncs the environment with `uv.lock` before each run, so no manual `uv sync` is needed after a pull.
+
+In a crontab, `PATH` often lacks `~/.local/bin`, so you may need the full path to `uv` (see `which uv`):
+
+```
+*/5 * * * * cd /path/to/albo-2-telegram && /home/user/.local/bin/uv run albo.py
+```
 
 ### Credits
 
