@@ -53,6 +53,10 @@ In a crontab, `PATH` often lacks `~/.local/bin`, so you may need the full path t
 */5 * * * * cd /path/to/albo-2-telegram && /home/user/.local/bin/uv run albo.py
 ```
 
+### AI agents
+
+Agent instructions live in [AGENTS.md](AGENTS.md); [.agents/docs/onboarding.md](.agents/docs/onboarding.md) explains the layout and how to hook up your agent.
+
 ### Credits
 
 - Stefano Borzì (Helias)

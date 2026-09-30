@@ -2,3 +2,11 @@ settings.yaml
 data/last_id.txt
 data/cached_announcements.txt
 utils/__pycache__
+
+# Agents
+.agents/plans/**
+.claude/plans/**
+.claude/worktrees/**
+.claude/settings.local.json
+.claude/__pycache__
+CLAUDE.local.md
