@@ -4,7 +4,7 @@ from typing import List, Union
 from urllib.parse import quote_plus, unquote, urlencode
 import requests
 import yaml
-from utils.formatting import escape_char
+lazy from utils.formatting import escape_char
 
 class TelegramBot:
     def __init__(self, token: str, chat_id: Union[int, str], dev_chat_ids: List[str]) -> None:

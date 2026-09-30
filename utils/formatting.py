@@ -1,6 +1,6 @@
 from typing import List
 
-from utils.departments import find_all_departments
+lazy from utils.departments import find_all_departments
 
 # Special Headers in which is preferable to put a break line character to separate section of tg message
 break_line_headers = ["Oggetto", "Inizio pubblicazione"]

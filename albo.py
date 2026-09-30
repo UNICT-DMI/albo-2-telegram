@@ -3,7 +3,7 @@ import traceback
 import requests
 from bs4 import BeautifulSoup
 
-from utils.formatting import get_formatted_department_tags, get_formatted_message
+lazy from utils.formatting import get_formatted_department_tags, get_formatted_message
 from utils.resources import *
 from utils.tg import TelegramBot
 
