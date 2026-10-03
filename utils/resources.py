@@ -1,7 +1,7 @@
 import os
-from typing import List, Optional
 
-def get_last_id (filename: str) -> Optional[int]:
+
+def get_last_id(filename: str) -> int | None:
     try:
         with open(filename, "r") as f_id:
             last_id = int(f_id.read())
@@ -10,16 +10,22 @@ def get_last_id (filename: str) -> Optional[int]:
 
     return last_id
 
-def get_cached_announcements(filename: str) -> List[int]:
+
+def get_cached_announcements(filename: str) -> list[int]:
     if not os.path.exists(filename):
         open(filename, "w").close()
 
     with open(filename, "r") as f_cached:
-        cached_announcements = [int(cached_id) for cached_id in f_cached.read().splitlines()]
+        cached_announcements = [
+            int(cached_id) for cached_id in f_cached.read().splitlines()
+        ]
 
     return cached_announcements
 
-def update_cached_announcements(cached_announcements: List[int], id: int, number_attachments: int) -> List[int]:
+
+def update_cached_announcements(
+    cached_announcements: list[int], id: int, number_attachments: int
+) -> list[int]:
     if number_attachments == 0:
         if id not in cached_announcements:
             cached_announcements.append(id)
@@ -28,14 +34,14 @@ def update_cached_announcements(cached_announcements: List[int], id: int, number
             cached_announcements.remove(id)
     return cached_announcements
 
+
 def write_new_id(filename: str, new_id: int) -> None:
     with open(filename, "w+") as f_id:
         f_id.write(str(new_id))
 
-def write_cached_announcements(filename: str, cached_announcements: List[int]) -> None:
-    text = '\n'.join(map(str, cached_announcements))
-  
-    with open(filename, "w+") as f_cached:    
+
+def write_cached_announcements(filename: str, cached_announcements: list[int]) -> None:
+    text = "\n".join(map(str, cached_announcements))
+
+    with open(filename, "w+") as f_cached:
         f_cached.write(text)
-    
-    

@@ -32,7 +32,7 @@ Edit the values inside the configuration file as you see fit, specifically:
 
 ```
 token: "" <string containing the bot's unique identifier>
-chat_id: 123456 <chat_id of the channel in which the bot will post its messagges>
+chat_id: 123456 <chat_id of the channel in which the bot will post its messages>
 chat_id_dev: <list of chat_ids with devs to receive technical exception regarding the bot>
   - 123456
   - 123456

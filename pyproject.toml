@@ -7,3 +7,14 @@ dependencies = [
     "pyyaml>=6.0.3",
     "requests>=2.34.2",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff==0.16.10",
+    "ty==0.0.84",
+    "typos==1.50.3",
+]
+
+[tool.typos.default.extend-words]
+# Correct Italian words that typos (English-only) flags
+astronomia = "astronomia"
