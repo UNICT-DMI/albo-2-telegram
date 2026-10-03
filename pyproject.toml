@@ -14,3 +14,7 @@ dev = [
     "ty==0.0.84",
     "typos==1.50.3",
 ]
+
+[tool.typos.default.extend-words]
+# Correct Italian words that typos (English-only) flags
+astronomia = "astronomia"
