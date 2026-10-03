@@ -1,9 +1,12 @@
 import os
-from typing import List
+from typing import List, Optional
 
-def get_last_id (filename: str) -> int:
-    with open(filename, "r") as f_id:
-        last_id = int(f_id.read())
+def get_last_id (filename: str) -> Optional[int]:
+    try:
+        with open(filename, "r") as f_id:
+            last_id = int(f_id.read())
+    except FileNotFoundError:
+        return None
 
     return last_id
 

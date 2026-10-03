@@ -39,7 +39,7 @@ chat_id_dev: <list of chat_ids with devs to receive technical exception regardin
   - ... 
 ```
 
-Create a new file named `last_id.txt` containing the current last ID in [albo](https://ws1.unict.it/albo/):
+The last processed ID in [albo](https://ws1.unict.it/albo/) is stored in `data/last_id.txt`. If the file is missing, the first run creates it with the newest ID and posts nothing. To start from an earlier announcement instead, create it by hand:
 
 ```
 $ echo 510 > data/last_id.txt
@@ -52,6 +52,24 @@ In a crontab, `PATH` often lacks `~/.local/bin`, so you may need the full path t
 ```
 */5 * * * * cd /path/to/albo-2-telegram && /home/user/.local/bin/uv run albo.py
 ```
+
+### Docker
+
+Alternatively, run it with Docker instead of uv and cron. Prepare `settings.yaml` as above, then:
+
+```
+$ docker compose up -d --build
+```
+
+The container checks albo every 5 minutes. To change the interval, set `ALBO_INTERVAL=<seconds>` in a `.env` file next to `compose.yaml`. `settings.yaml` is mounted read-only and `data/` is mounted read-write, so the state survives rebuilds. The container runs as UID 1000, so `data/` must be writable by that user.
+
+For a single run, for example with `--force-unsafe`:
+
+```
+$ docker compose run --rm albo python albo.py --force-unsafe
+```
+
+Follow the output with `docker compose logs -f`.
 
 ### AI agents
 

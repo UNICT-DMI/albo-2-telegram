@@ -1,0 +1,16 @@
+services:
+  albo:
+    build: .
+    image: albo-2-telegram
+    init: true
+    restart: unless-stopped
+    # Replaces the host crontab: one check every ALBO_INTERVAL seconds (set it in .env).
+    command: ["sh", "-c", "while :; do python albo.py; sleep ${ALBO_INTERVAL:-300}; done"]
+    volumes:
+      # Long syntax so a missing settings.yaml fails fast instead of being created as a directory.
+      - type: bind
+        source: ./settings.yaml
+        target: /app/settings.yaml
+        read_only: true
+      # last_id.txt and cached_announcements.txt; the container user (UID 1000) must be able to write here.
+      - ./data:/app/data

@@ -34,6 +34,11 @@ def main ():
 
     new_id = int(top_row.td.string)
 
+    # Without data/last_id.txt start from the newest announcement, instead of posting the whole backlog
+    if last_id is None:
+        print("data/last_id.txt non trovato, si parte dall'ID " + str(new_id))
+        last_id = new_id
+
     headers = [header.string for header in table.find('tr').find_all("td")]
 
     ids_to_parse = cached_announcements + list(range(last_id + 1, new_id + 1))

@@ -1,0 +1,10 @@
+# Allowlist: settings.yaml holds the bot token and data/ holds runtime state,
+# both are mounted at runtime and must never end up in an image layer.
+*
+!albo.py
+!utils/
+!departments_regex.yaml
+!pyproject.toml
+!uv.lock
+!.python-version
+**/__pycache__
