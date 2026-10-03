@@ -1,11 +1,12 @@
 import sys
 import traceback
+
 import requests
 from bs4 import BeautifulSoup
 
-lazy from utils.formatting import get_formatted_department_tags, get_formatted_message
 from utils.resources import *
 from utils.tg import TelegramBot
+lazy from utils.formatting import get_formatted_department_tags, get_formatted_message
 
 ALBO_UNICT_URL = "http://albo.unict.it/"
 
@@ -21,7 +22,7 @@ def main():
 
     if page.status_code != 200:
         print("Impossibile accedere al sito, riprovare più tardi")
-        quit(1)
+        sys.exit(1)
 
     soup = BeautifulSoup(page.content, "html.parser")
 
@@ -91,7 +92,7 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except Exception as e:
+    except Exception:
         error_string = "An exception was raised:\n" + "`" + traceback.format_exc() + "`"
         tg_bot.send_debug_messages(error_string)
         raise

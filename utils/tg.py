@@ -1,23 +1,21 @@
 import json
 import re
-from typing import List, Union
 from urllib.parse import quote_plus, unquote, urlencode
+
 import requests
 import yaml
+
 lazy from utils.formatting import escape_char
 
 
 class TelegramBot:
-    def __init__(
-        self, token: str, chat_id: Union[int, str], dev_chat_ids: List[str]
-    ) -> None:
+    def __init__(self, token: str, chat_id: int | str, dev_chat_ids: list[str]) -> None:
         self.token = token
         self.chat_id = chat_id
         self.dev_ids = dev_chat_ids
-        pass
 
     @classmethod
-    def from_settings_file(cls, filename: str) -> "TelegramBot":
+    def from_settings_file(cls, filename: str) -> TelegramBot:
         with open(filename) as f:
             data = yaml.load(f, Loader=yaml.SafeLoader)
             token, chat_id, dev_chat_ids = data.values()
@@ -29,7 +27,9 @@ class TelegramBot:
         if responseJSON["ok"] == False:
             raise ValueError(json.dumps(responseJSON, indent=2), URL.split("&")[-1])
 
-    def send_telegram_message(self, text: str, chat_id: Union[str, int] = None) -> None:
+    def send_telegram_message(
+        self, text: str, chat_id: str | int | None = None
+    ) -> None:
         if chat_id == None:
             chat_id = self.chat_id
         params = {"chat_id": chat_id, "parse_mode": "markdown", "text": text}
@@ -57,7 +57,7 @@ class TelegramBot:
         )
         self.send_https_request(URL)
 
-    def send_multiple_telegram_attachments(self, pdf_links: List[str]) -> None:
+    def send_multiple_telegram_attachments(self, pdf_links: list[str]) -> None:
         input_media_documents = [
             {"type": "document", "media": pdf_link} for pdf_link in pdf_links
         ]
@@ -74,7 +74,7 @@ class TelegramBot:
         )
         self.send_https_request(URL)
 
-    def send_telegram_announcements(self, pdf_links: List[str], message: str) -> None:
+    def send_telegram_announcements(self, pdf_links: list[str], message: str) -> None:
         if len(pdf_links) == 1:
             if len(message) < 1024:
                 self.send_single_telegram_attachment(pdf_links[0], message)

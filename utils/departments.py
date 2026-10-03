@@ -1,10 +1,11 @@
 import re
+from typing import TypedDict
+
 import yaml
-from typing import List, TypedDict
 
 
 class Department(TypedDict):
-    patterns: List[str]
+    patterns: list[str]
     acronym: str
     name: str
 
@@ -21,7 +22,7 @@ def search_department(department: Department, text: str) -> bool:
     return any(matches) or acronym_found
 
 
-def find_all_departments(text: str, departments: List[Department] = deps) -> List[str]:
+def find_all_departments(text: str, departments: list[Department] = deps) -> list[str]:
     department_tags = [
         department["name"]
         for department in departments
