@@ -21,7 +21,7 @@ def main():
     page = requests.get(ALBO_UNICT_URL)
 
     if page.status_code != 200:
-        print("Impossibile accedere al sito, riprovare più tardi")
+        print("Cannot reach the albo site, try again later")
         sys.exit(1)
 
     soup = BeautifulSoup(page.content, "html.parser")
@@ -37,7 +37,7 @@ def main():
     top_row = header_row.find_next_sibling()
 
     if top_row is None:
-        print("Nessun annuncio disponibile")
+        print("No announcements available")
         return
 
     id_cell = top_row.td
@@ -48,7 +48,7 @@ def main():
 
     # Without data/last_id.txt start from the newest announcement, instead of posting the whole backlog
     if last_id is None:
-        print("data/last_id.txt non trovato, si parte dall'ID " + str(new_id))
+        print("data/last_id.txt not found, starting from ID " + str(new_id))
         last_id = new_id
 
     headers = [header.get_text() for header in header_row.find_all("td")]
@@ -58,14 +58,14 @@ def main():
     # avoid channel flooding in case of error
     if len(ids_to_parse) > 10 and "--force-unsafe" not in sys.argv:
         ids_to_parse = []
-        print("Troppi annunci da parsare, usare --force-unsafe per forzare l'invio")
+        print("Too many announcements to parse, use --force-unsafe to send them anyway")
 
     for id in ids_to_parse:
         td = table.find("td", string=str(id))
 
         if td is None:
             tg_bot.send_debug_messages(
-                "ID non trovato: " + str(id) + "\n" + "Probabilmente lo hanno saltato"
+                "ID not found: " + str(id) + "\n" + "It was probably skipped"
             )
             if id in cached_announcements:
                 cached_announcements.remove(id)
