@@ -27,21 +27,31 @@ def main():
     soup = BeautifulSoup(page.content, "html.parser")
 
     table = soup.find("div", id="boge")
+    if table is None:
+        raise RuntimeError("div#boge not found on the albo page")
 
-    top_row = table.find("tr").find_next_sibling()
+    header_row = table.find("tr")
+    if header_row is None:
+        raise RuntimeError("Header row not found in the albo table")
+
+    top_row = header_row.find_next_sibling()
 
     if top_row is None:
         print("Nessun annuncio disponibile")
         return
 
-    new_id = int(top_row.td.string)
+    id_cell = top_row.td
+    if id_cell is None:
+        raise RuntimeError("ID cell not found in the first albo row")
+
+    new_id = int(id_cell.get_text())
 
     # Without data/last_id.txt start from the newest announcement, instead of posting the whole backlog
     if last_id is None:
         print("data/last_id.txt non trovato, si parte dall'ID " + str(new_id))
         last_id = new_id
 
-    headers = [header.string for header in table.find("tr").find_all("td")]
+    headers = [header.get_text() for header in header_row.find_all("td")]
 
     ids_to_parse = cached_announcements + list(range(last_id + 1, new_id + 1))
 
@@ -51,7 +61,7 @@ def main():
         print("Troppi annunci da parsare, usare --force-unsafe per forzare l'invio")
 
     for id in ids_to_parse:
-        td = table.find("td", text=id)
+        td = table.find("td", string=str(id))
 
         if td is None:
             tg_bot.send_debug_messages(
@@ -62,6 +72,9 @@ def main():
             continue
 
         tr = td.parent
+        if tr is None:
+            raise RuntimeError("Row of announcement " + str(id) + " not found")
+
         row = tr.find_all("td")
 
         message = get_formatted_message(row, headers)
@@ -70,7 +83,8 @@ def main():
 
         try:
             attachments = [
-                ALBO_UNICT_URL + list_item["href"] for list_item in tr.find_all("a")
+                ALBO_UNICT_URL + str(list_item["href"])
+                for list_item in tr.find_all("a")
             ]
             cached_announcements = update_cached_announcements(
                 cached_announcements, id, len(attachments)
